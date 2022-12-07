@@ -68,7 +68,7 @@ static void test_mnt_id(struct statx *buf)
 		if (sscanf(line, "%"SCNu64" %*d %d:%d", &mnt_id, &line_mjr, &line_mnr) != 3)
 			continue;
 
-		if (line_mjr == buf->stx_dev_major && line_mnr == buf->stx_dev_minor)
+		if (line_mjr == buf->stx_dev_major && line_mnr == buf->stx_dev_minor && mnt_id == buf->stx_mnt_id)
 			break;
 	}
 
