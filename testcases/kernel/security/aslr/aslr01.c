@@ -40,8 +40,8 @@
 #define ASLR_MINBITS 1
 #define ASLR_COMPAT_MINBITS 2
 
-static int pagebits, minbits = 8;
-static char *minbits_str, *strict_check;
+static int pagebits, minbits = 8, iterations = 128;
+static char *minbits_str, *iterations_str, *strict_check;
 static char lib_path[PATH_MAX];
 static FILE *ldd;
 
@@ -187,6 +187,9 @@ static void setup(void)
 	if (!strict_check && tst_parse_int(minbits_str, &minbits, 1, 64))
 		tst_brk(TBROK, "Invalid bit count argument '%s'", minbits_str);
 
+	if (tst_parse_int(iterations_str, &iterations, 1, 100000))
+		tst_brk(TBROK, "Invalid iteration count '%s'", iterations_str);
+
 	if (strict_check) {
 		if (compat) {
 			kconf_minbits = aslr_kconfigs[ASLR_COMPAT_MINBITS].val;
@@ -218,7 +221,7 @@ static void run(void)
 
 	fixbits = ~rndbits;
 
-	for (i = 0; i < 128; i++) {
+	for (i = 0; i < iterations; i++) {
 		addr = 0;
 		read_shared_libraries(get_lib_address_callback, &addr);
 
@@ -270,6 +273,7 @@ static struct tst_test test = {
 	.forks_child = 1,
 	.options = (struct tst_option []) {
 		{"b:", &minbits_str, "Minimum ASLR random bits (default: 8)"},
+		{"n:", &iterations_str, "Number of samples to collect (default: 128)"},
 		{"s", &strict_check, "Run in strict mode"},
 		{}
 	},
