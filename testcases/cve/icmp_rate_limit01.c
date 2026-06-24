@@ -255,6 +255,8 @@ static struct tst_test test = {
 	},
 	.save_restore = (const struct tst_path_val[]) {
 		{"/proc/sys/user/max_user_namespaces", "1024", TST_SR_SKIP},
+		{"/proc/sys/net/ipv4/icmp_msgs_per_sec", "10", TST_SR_SKIP},
+		{"/proc/sys/net/ipv4/icmp_msgs_burst", "20", TST_SR_SKIP},
 		{}
 	},
 	.tags = (const struct tst_tag[]) {
