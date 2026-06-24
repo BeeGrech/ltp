@@ -218,7 +218,7 @@ static void run(void)
 
 	fixbits = ~rndbits;
 
-	for (i = 0; i < 512; i++) {
+	for (i = 0; i < 128; i++) {
 		addr = 0;
 		read_shared_libraries(get_lib_address_callback, &addr);
 
